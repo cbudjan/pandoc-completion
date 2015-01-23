@@ -1,16 +1,16 @@
-# pandoc completion 
-# 
+# pandoc completion
+#
 # (c) 2012, 2013 David Sanson
-# 
+#
 # Copying and distribution of this file, with or without modification,
 # are permitted in any medium without royalty provided the copyright
 # notice and this notice are preserved.  This file is offered as-is,
 # without any warranty.
 #
 # Pandoc Version: 1.11
-# 
+#
 
-function _completer() 
+function _completer()
 {
     local command cur prev opts
     command="$1"
@@ -21,9 +21,9 @@ function _completer()
     then
        prev="${COMP_WORDS[COMP_CWORD-2]}"
     fi
-    
+
     extensible="markdown markdown_github markdown_mmd \
-        markdown_phpextra markdown_strict" 
+        markdown_phpextra markdown_strict"
 
     input="docbook haddock html json latex mediawiki \
         native opml rst textile"
@@ -51,9 +51,9 @@ function _completer()
         hard_line_breaks tex_math_single_backslash \
         tex_math_double_backslash markdown_attribute \
         mmd_title_block abbreviations autolink_bare_uris \
-        link_attributes mmd_header_identifiers" 
-    
-    
+        link_attributes mmd_header_identifiers"
+
+
     bibs="(bib)|(mods)|(ris)|(bbx)|(enl)|(xml)|(wos)|(copac)|(json)|(medline)"
 
     highlight_styles="pygments kate monochrome espresso zenburn haddock tango"
@@ -132,15 +132,15 @@ function _completer()
                         --ignore-args \
   -v                    --version \
   -h                    --help"
-        
-    
+
+
     if [ "$command" == "pandoc" ]
     then
         opts="$pandoc_opts"
     else
         return 0
     fi
-    
+
     case "$prev" in
         -f|-r|--from|--read)
             if [[ $cur == *[+-] ]]
@@ -222,7 +222,7 @@ function _completer()
             ;;
         --csl)
             COMPREPLY=( $( ls $HOME/.csl/ 2> /dev/null | egrep "^${cur}.*\.csl$" ) )
-            COMPREPLY=( ${COMPREPLY[@]} $(compgen -f -- ${cur} | grep ".csl$" ) ) 
+            COMPREPLY=( ${COMPREPLY[@]} $(compgen -f -- ${cur} | grep ".csl$" ) )
             return 0
             ;;
         --citation-abbreviations)
@@ -247,6 +247,14 @@ function _completer()
     esac
 
     case "$cur" in
+        -x)
+          COMPREPLY=( "--latex-engine xelatex" )
+          return 0
+          ;;
+        -b)
+          COMPREPLY=( "--bibliography $HOME/.pandoc/default.bib")
+          return 0
+          ;;
         -*)
           COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
           return 0
